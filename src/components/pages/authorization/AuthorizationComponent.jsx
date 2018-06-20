@@ -5,10 +5,7 @@ function Authorization() {
   VK.Widgets.Auth('vk_auth', { authUrl: '/dev/Login' });
 
   return (
-    <div>
-      <div id="vk_auth">vk auth</div>
-      <button>login</button>
-    </div>
+    <div id="vk_auth"></div>
   );
 }
 

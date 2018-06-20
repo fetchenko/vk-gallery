@@ -14,7 +14,9 @@ const store = createStore(
 const { VK } = window;
 
 VK.init({
-  apiId: vkApiId,
+  apiId: +vkApiId,
 });
+
+console.log(window);
 
 export { store, VK };
