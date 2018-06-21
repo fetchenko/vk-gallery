@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 
 import Authorization from '../components/pages/authorization';
-import { store } from '../store/configureStore';
+import store from '../store/configureStore';
 
 import './App.css';
 

@@ -2,7 +2,8 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import rootReducer from './reducers/rootReducer';
-import vkApiId from '../config/vkApiId';
+
+import { initialiseOpenAPI } from '../store/actions/authorizationActions';
 
 const middleware = [thunk, logger];
 
@@ -11,10 +12,6 @@ const store = createStore(
   applyMiddleware(...middleware),
 );
 
-const { VK } = window;
+store.dispatch(initialiseOpenAPI());
 
-VK.init({
-  apiId: vkApiId,
-});
-
-export { store, VK };
+export default store;

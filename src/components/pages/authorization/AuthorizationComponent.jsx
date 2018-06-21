@@ -1,15 +1,26 @@
 import React from 'react';
-import { VK } from '../../../store/configureStore';
+import { connect } from 'react-redux';
+
+import Login from '../../inputs/buttons/login';
 
 function Authorization() {
-  VK.Widgets.Auth('vk_auth', { authUrl: '/dev/Login' });
-
   return (
     <div>
-      <div id="vk_auth">vk auth</div>
-      <button>login</button>
+      <h1>Auth page</h1>
+      <Login />
     </div>
   );
 }
+/*
+const mapDispatchToProps = () => ({
+  // return {
+  // };
+});
 
-export default Authorization;
+const mapStateToProps = () => ({
+  // return {
+  // };
+});
+*/
+
+export default connect(null, null)(Authorization);
