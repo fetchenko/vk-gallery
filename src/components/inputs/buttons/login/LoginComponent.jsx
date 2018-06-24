@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
 
 import * as authorizeActions from '../../../../store/actions/authorizationActions';
 
@@ -8,11 +9,12 @@ function Login(props) {
   const { vkLogin } = props;
 
   return (
-    <button
+    <Button
+      color="default"
       onClick={() => { vkLogin(); }}
     >
-      login
-    </button>
+      Login with VK
+    </Button>
   );
 }
 

@@ -1,8 +1,6 @@
 import * as actions from '../../constants/actionsType';
 import vkApiId from '../../config/vkApiId';
 
-const { VK } = window;
-
 const vkAuthorizeUserAction = () => ({
   type: actions.AUTHORIZE_USER,
 });
@@ -12,55 +10,60 @@ const vkAuthorizeUserSuccessAction = user => ({
   payload: user,
 });
 
-
 const vkAuthorizeUserFailureAction = error => ({
   type: actions.AUTHORIZE_USER_FAILURE,
   payload: error,
 });
 
-const initialiseOpenAPIAction = openAPI => ({
+const initialiseVKAPIAction = vkAPI => ({
   type: actions.INITIALIZE_OPEN_API,
-  payload: openAPI,
+  payload: vkAPI,
 });
 
-export const initialiseOpenAPI = () => (dispatch) => {
-  VK.init({ apiId: vkApiId });
+export const initialiseVKAPI = () => (dispatch) => {
+  window.VK.init({ apiId: vkApiId });
 
-  // open api object will store.auth.VK
-  dispatch(initialiseOpenAPIAction(VK));
+  // open api object will save state as store.auth.VK
+  dispatch(initialiseVKAPIAction(window.VK));
 };
 
-export const vkLogin = () => {
-  const result = [];
+export const vkLoginAsync = () => (dispatch) => {
+  window.VK.Auth.login((response) => {
+    if (response) {
+      const { user } = response.session;
+      dispatch(vkAuthorizeUserSuccessAction(user));
+    } else {
+      dispatch(vkAuthorizeUserFailureAction(new Error('result is empty')));
+    }
+  });
+};
 
-  VK.Auth.login((response) => {
-    console.log(response);
+export const vkLogin = () => new Promise((resolve, reject) => {
+  let result;
+
+  window.VK.Auth.login((response) => {
+    result = response;
   });
 
-  console.log(result);
-  return result[0];
-};
+  if (result) {
+    resolve(result);
+  } else {
+    reject(new Error('no result'));
+  }
+});
 
 export const vkAuthorizeUser = () => (dispatch) => {
-  initialiseOpenAPI();
+  initialiseVKAPI();
   dispatch(vkAuthorizeUserAction());
-  const responceStatus = vkLogin();
-
-  switch (responceStatus) {
-    case 'connected':
-      dispatch(vkAuthorizeUserSuccessAction());
-      break;
-
-    case 'not_authorized':
-      dispatch(vkAuthorizeUserFailureAction());
-      break;
-
-    case 'unknown':
-      dispatch(vkAuthorizeUserFailureAction());
-      break;
-
-    default:
-      dispatch(vkAuthorizeUserFailureAction());
-      break;
-  }
+  dispatch(vkLoginAsync());
+  /* try {
+    vkLogin()
+      .then((response) => {
+        console.log(response);
+        dispatch(vkAuthorizeUserSuccessAction(response));
+      })
+      .catch(error => dispatch(vkAuthorizeUserFailureAction(error)));
+  } catch (error) {
+    dispatch(vkAuthorizeUserFailureAction(error));
+  } */
 };
