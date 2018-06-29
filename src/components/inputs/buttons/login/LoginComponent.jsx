@@ -27,8 +27,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = () => ({
-  // return {
-  // };
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

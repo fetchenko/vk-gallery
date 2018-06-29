@@ -4,7 +4,7 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { BrowserRouter } from 'react-router-dom';
 
 import Navbar from '../regions/navbar';
-import Authorization from '../pages/authorization';
+import Router from '../../components/routes';
 import store from '../../store/configureStore';
 
 import './App.css';
@@ -15,7 +15,7 @@ function App() {
       <BrowserRouter>
         <MuiThemeProvider>
           <Navbar />
-          <Authorization />
+          <Router />
         </MuiThemeProvider>
       </BrowserRouter>
     </Provider>

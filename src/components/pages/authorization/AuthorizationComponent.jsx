@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -17,38 +18,60 @@ const styles = {
   },
 };
 
-function Authorization({ classes }) {
+class Authorization extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      redirect: false,
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { authed } = nextProps;
+
+    if (authed) {
+      this.setState({
+        redirect: true,
+      });
+    }
+  }
   // window.VK.Widgets.Auth('vk_auth', {});
 
-  return (
-    <Grid container className={classes.textCenter}>
-      <Grid item xs={12} lg={4}>
-        <Login />
-        <div id="vk_auth">-</div>
+  render() {
+    const { classes } = this.props;
+    const { redirect } = this.state;
+
+    if (redirect) {
+      return <Redirect to="gallery" />;
+    }
+
+    return (
+      <Grid container className={classes.textCenter}>
+        <Grid item xs={12} lg={4}>
+          <Login />
+          {/* <div id="vk_auth"></div> */}
+        </Grid>
+        <Grid item xs={12} lg={6}>
+          <img src="http://chudo.tech/wp-content/uploads/2017/05/vk-mobile.jpg" alt="VK logo" className={classes.image} />
+        </Grid>
       </Grid>
-      <Grid item xs={12} lg={6}>
-        <img src="http://chudo.tech/wp-content/uploads/2017/05/vk-mobile.jpg" alt="VK logo" className={classes.image} />
-      </Grid>
-    </Grid>
-  );
+    );
+  }
 }
 
 Authorization.propTypes = {
   classes: PropTypes.shape({
     image: PropTypes.string,
   }).isRequired,
+  authed: PropTypes.bool.isRequired,
 };
 
-/*
 const mapDispatchToProps = () => ({
-  // return {
-  // };
 });
 
-const mapStateToProps = () => ({
-  // return {
-  // };
+const mapStateToProps = state => ({
+  authed: state.auth.authed,
 });
-*/
 
-export default connect(null, null)(withStyles(styles)(Authorization));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Authorization));

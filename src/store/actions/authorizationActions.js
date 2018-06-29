@@ -1,4 +1,4 @@
-import * as actions from '../../constants/actionsType';
+import * as actions from '../../constants/authorizeActionsType';
 import vkApiId from '../../config/vkApiId';
 
 const vkAuthorizeUserAction = () => ({
@@ -16,8 +16,12 @@ const vkAuthorizeUserFailureAction = error => ({
 });
 
 const initialiseVKAPIAction = vkAPI => ({
-  type: actions.INITIALIZE_OPEN_API,
+  type: actions.INITIALIZE_VK_API,
   payload: vkAPI,
+});
+
+const clearAuthData = () => ({
+  type: actions.CLEAR_AUTH_DATA,
 });
 
 export const initialiseVKAPI = () => (dispatch) => {
@@ -27,11 +31,19 @@ export const initialiseVKAPI = () => (dispatch) => {
   dispatch(initialiseVKAPIAction(window.VK));
 };
 
+export const vkLogout = () => (dispatch) => {
+  window.VK.Auth.logout((response) => {
+    if (!response.session) {
+      dispatch(clearAuthData());
+    }
+  });
+};
+
 export const vkLoginAsync = () => (dispatch) => {
   window.VK.Auth.login((response) => {
     if (response) {
-      const { user } = response.session;
-      dispatch(vkAuthorizeUserSuccessAction(user));
+      const { session } = response;
+      dispatch(vkAuthorizeUserSuccessAction(session));
     } else {
       dispatch(vkAuthorizeUserFailureAction(new Error('result is empty')));
     }
