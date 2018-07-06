@@ -1,9 +1,8 @@
-import * as actions from '../../constants/authorizeActionsType';
+import * as actions from '../../constants/authorizationActionTypes';
 
 const initialeState = {
   authed: false,
   session: {},
-  VK: {},
 };
 
 export default function authorizeReducer(state = initialeState, action) {
@@ -16,8 +15,6 @@ export default function authorizeReducer(state = initialeState, action) {
       return { ...state, authed: true, session: payload };
     case actions.AUTHORIZE_USER_FAILURE:
       return { ...state, error: payload, session: {} };
-    case actions.INITIALIZE_VK_API:
-      return { ...state, VK: payload };
     case actions.CLEAR_AUTH_DATA:
       return initialeState;
     default:

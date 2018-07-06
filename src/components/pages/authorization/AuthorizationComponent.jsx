@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
 import Login from '../../inputs/buttons/login';
 
@@ -12,6 +13,7 @@ const styles = {
   image: {
     width: '100%',
     height: 'auto',
+    borderRadius: '8%',
   },
   textCenter: {
     textAlign: 'center',
@@ -43,14 +45,19 @@ class Authorization extends Component {
     const { redirect } = this.state;
 
     if (redirect) {
-      return <Redirect to="gallery" />;
+      return <Redirect to="/" />;
     }
 
     return (
       <Grid container className={classes.textCenter}>
         <Grid item xs={12} lg={4}>
+          <Typography>
+            You can find your VK photo here
+          </Typography>
+          <Typography>
+            Join now
+          </Typography>
           <Login />
-          {/* <div id="vk_auth"></div> */}
         </Grid>
         <Grid item xs={12} lg={6}>
           <img src="http://chudo.tech/wp-content/uploads/2017/05/vk-mobile.jpg" alt="VK logo" className={classes.image} />

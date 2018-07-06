@@ -4,6 +4,4 @@ export const AUTHORIZE_USER_SUCCESS = 'AUTHORIZE_USER_SUCCESS';
 
 export const LOGOUT = 'LOGOUT';
 
-export const INITIALIZE_VK_API = 'INITIALIZE_VK_API';
-
 export const CLEAR_AUTH_DATA = 'CLEAR_AUTH_DATA';

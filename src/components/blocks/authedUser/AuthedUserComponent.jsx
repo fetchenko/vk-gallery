@@ -15,6 +15,9 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
   },
+  avatar: {
+    margin: '10px',
+  },
 };
 
 class AuthedUser extends React.Component {
@@ -94,7 +97,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => ({
   authed: state.auth.authed,
-  session: state.auth.session,
+  session: state.auth.session || {},
   user: state.auth.session.user || {},
   smallAvatar: state.user.photo || '',
 });

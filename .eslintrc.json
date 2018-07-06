@@ -5,6 +5,6 @@
     },
     "env": {
       "browser": true,
-      "shared-node-browser": true
+      "node": true
     }
 }
