@@ -1,16 +1,16 @@
 import * as actions from '../../constants/authorizationActionTypes';
 import { scope } from '../../constants/vkSettings';
 
-const vkAuthorizeUserAction = () => ({
+const vkAuthorizeAction = () => ({
   type: actions.AUTHORIZE_USER,
 });
 
-const vkAuthorizeUserSuccessAction = user => ({
+const vkAuthorizeSuccessAction = user => ({
   type: actions.AUTHORIZE_USER_SUCCESS,
   payload: user,
 });
 
-const vkAuthorizeUserFailureAction = error => ({
+const vkAuthorizeFailureAction = error => ({
   type: actions.AUTHORIZE_USER_FAILURE,
   payload: error,
 });
@@ -27,20 +27,16 @@ export const vkLogout = () => (dispatch) => {
   });
 };
 
-export const vkLoginAsync = () => (dispatch) => {
-  const onLogin = (response) => {
-    if (response) {
-      const { session } = response;
-      dispatch(vkAuthorizeUserSuccessAction(session));
-    } else {
-      dispatch(vkAuthorizeUserFailureAction(new Error('result is empty')));
-    }
-  };
+export const vkLogin = () => (dispatch) => {
+  const onLogin = response =>
+    (response
+      ? dispatch(vkAuthorizeSuccessAction(response.session))
+      : dispatch(vkAuthorizeFailureAction(new Error('result is empty'))));
 
   window.VK.Auth.login(onLogin, scope);
 };
 
-export const vkAuthorizeUser = () => (dispatch) => {
-  dispatch(vkAuthorizeUserAction());
-  dispatch(vkLoginAsync());
+export const vkAuthorize = () => (dispatch) => {
+  dispatch(vkAuthorizeAction());
+  dispatch(vkLogin());
 };

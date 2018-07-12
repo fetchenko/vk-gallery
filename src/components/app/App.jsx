@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Navbar from '../regions/navbar';
 import Router from '../../components/routes';
 import store from '../../store/configureStore';
+// import theme from '../../styles/theme';
 
 import './App.css';
 

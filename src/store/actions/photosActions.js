@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import * as actions from '../../constants/photosActionTypes';
 import { actualVKAPIVersionForPhotos } from '../../constants/vkSettings';
 
@@ -15,15 +17,21 @@ const vkResponsePhotosFauilureAction = error => ({
   payload: error,
 });
 
-export const photoItemsToGalleryPhoto = (items) => {
+const findIndexForSize = (sizes, sizeType) => _.findIndex(sizes, size => size.type === sizeType);
+
+export const photoItemsToGalleryPhotos = (items, sizeType) => {
   const galleryPhotos = [];
-  items.forEach(item => galleryPhotos.push({
-    id: item.id,
-    src: item.sizes[3].url,
-    thumbnail: item.sizes[3].url,
-    thumbnailWidth: item.sizes[3].width,
-    thumbnailHeight: item.sizes[3].height,
-  }));
+  items.forEach((item) => {
+    const sizeIndex = findIndexForSize(item.sizes, sizeType);
+    galleryPhotos.push({
+      id: item.id,
+      date: item.date,
+      src: item.sizes[sizeIndex].url,
+      thumbnail: item.sizes[sizeIndex].url,
+      thumbnailWidth: item.sizes[sizeIndex].width,
+      thumbnailHeight: item.sizes[sizeIndex].height,
+    });
+  });
 
   return galleryPhotos;
 };
@@ -36,9 +44,8 @@ export const vkGetPhotos = (userId, accessToken) => (dispatch) => {
       access_token: accessToken,
       v: actualVKAPIVersionForPhotos,
     }, (result) => {
-      const { response } = result;
-      if (response) {
-        const galleryPhotos = photoItemsToGalleryPhoto(response.items);
+      if (result) {
+        const galleryPhotos = photoItemsToGalleryPhotos(result.response.items, 'x');
         dispatch(vkResponsePhotosSuccessAction(galleryPhotos));
       }
     });

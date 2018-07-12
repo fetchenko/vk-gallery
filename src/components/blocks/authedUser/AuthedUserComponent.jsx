@@ -1,22 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import IconButton from '@material-ui/core/IconButton';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import classNames from 'classnames';
 
 import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import * as authorizationActions from '../../../store/actions/authorizationActions';
 import * as userActions from '../../../store/actions/userActions';
 
 const styles = {
-  container: {
+  root: {
     display: 'flex',
     alignItems: 'center',
   },
   avatar: {
     margin: '10px',
+  },
+  hidden: {
+    display: 'none',
   },
 };
 
@@ -48,13 +53,15 @@ class AuthedUser extends React.Component {
 
     return (isObjNotEmpty(user))
       ? (
-        <div className={classes.container}>
+        <div className={classes.root}>
           <Avatar
             alt={`${user.first_name} ${user.last_name}`}
             src={smallAvatar}
-            className={classes.avatar}
+            className={classNames(classes.avatar, classes.hidden)}
           />
-          <p>{user.first_name} {user.last_name}</p>
+          <Typography variant="body2" color="inherit">
+            {user.first_name} {user.last_name}
+          </Typography>
           <IconButton
             color="inherit"
             aria-label="Exit"
@@ -79,7 +86,7 @@ AuthedUser.propTypes = {
     sid: PropTypes.string,
   }).isRequired,
   classes: PropTypes.shape({
-    container: PropTypes.string,
+    root: PropTypes.string,
   }).isRequired,
   vkLogout: PropTypes.func.isRequired,
   user: PropTypes.shape({

@@ -22,7 +22,7 @@ function Navbar({ classes }) {
     <div className={classes.root}>
       <AppBar position="static" color="default">
         <Toolbar>
-          <Typography className={classes.flex} variant="title" color="inherit">
+          <Typography className={classes.flex} variant="subheading" color="inherit">
             VK-GALLERY
           </Typography>
           <AuthedUser />

@@ -22,13 +22,6 @@ class Photos extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.photos !== this.props.photos) {
-      const { photos } = nextProps;
-      console.log({ photos });
-    }
-  }
-
   render() {
     const { photos } = this.props;
     return (
@@ -44,9 +37,10 @@ Photos.propTypes = {
   }).isRequired,
   authed: PropTypes.bool.isRequired,
   vkGetPhotos: PropTypes.func.isRequired,
-  photos: PropTypes.shape({
-    id: PropTypes.string,
-  }).isRequired,
+  photos: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    src: PropTypes.string,
+  })).isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
